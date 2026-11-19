@@ -98,8 +98,9 @@ class LaunchActivity : Activity() {
         try {
             PrivateSpace.startActivity(this, user, shortcut.intent)
         } catch (e: SecurityException) {
-            if (!Permissions.isShizukuReady()) throw IllegalStateException("this shortcut needs Shizuku running", e)
-            AppShortcuts.start(this, user, shortcut.packageName, shortcut.id)
+            if (!ShizukuAccess.SUPPORTED) throw IllegalStateException("this shortcut needs the Shizuku build", e)
+            if (!ShizukuAccess.isReady()) throw IllegalStateException("this shortcut needs Shizuku running", e)
+            ShizukuAccess.startShortcut(this, user, shortcut.packageName, shortcut.id)
         }
     }
 
